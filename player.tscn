@@ -1,18 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://kn6ykqolgoae"]
 
 [ext_resource type="Script" uid="uid://c2ca2qkf87nxv" path="res://player.gd" id="1_4flbx"]
-[ext_resource type="ArrayMesh" uid="uid://d38sv275rrwad" path="res://assets/cat/cat/Cat.obj" id="2_onrkg"]
+[ext_resource type="PackedScene" uid="uid://b64o2v13ocraa" path="res://cat_2.tscn" id="2_onrkg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_onrkg"]
 size = Vector3(0.166767, 0.474609, 0.704529)
 
-[node name="Player" type="RigidBody3D"]
-lock_rotation = true
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_4flbx")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.033, 0.003, 0)
-mesh = ExtResource("2_onrkg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00507279, 0.262695, -0.0675964)
@@ -26,3 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 
 
 [node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.782, 1.5)
+current = true
+
+[node name="Cat2" parent="." instance=ExtResource("2_onrkg")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0.278304, -0.0270927)
