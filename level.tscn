@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://crsrsc5dlcqhk"]
+
+[ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://player.tscn" id="1_u52ul"]
+[ext_resource type="ArrayMesh" uid="uid://dx56araebri33" path="res://assets/room/furniture/sofa.obj" id="2_vonw3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5xgho"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_u52ul"]
+sky_material = SubResource("ProceduralSkyMaterial_5xgho")
+
+[sub_resource type="Environment" id="Environment_vonw3"]
+background_mode = 2
+sky = SubResource("Sky_u52ul")
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5xgho"]
+size = Vector2(5, 6)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_u52ul"]
+data = PackedVector3Array(2.5, 0, 3, -2.5, 0, 3, 2.5, 0, -3, -2.5, 0, 3, -2.5, 0, -3, 2.5, 0, -3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u52ul"]
+size = Vector3(5.89266, 4.09814, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oi3di"]
+size = Vector3(2.52661, 0.45874, 0.929688)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vonw3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_u52ul")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.501)
+top_level = true
+linear_damp = 3.0
+
+[node name="Room" type="Node3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5954)
+mesh = SubResource("PlaneMesh_5xgho")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room/Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_u52ul")
+
+[node name="Walls" type="StaticBody3D" parent="Room"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.229954, 1.54907, 2.01461)
+shape = SubResource("BoxShape3D_u52ul")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Room/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.459908, 1.4687, -4.93198)
+shape = SubResource("BoxShape3D_u52ul")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Room/Walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.02646, 1.68241, -1.46594)
+shape = SubResource("BoxShape3D_u52ul")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Room/Walls"]
+transform = Transform3D(0.0150615, 0, 0.999887, 0, 1, 0, -0.999887, 0, 0.0150615, -2.92998, 1.37676, -1.37779)
+shape = SubResource("BoxShape3D_u52ul")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.13824)
+mesh = ExtResource("2_vonw3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/MeshInstance3D/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104614, 0.219116, 0.0351563)
+shape = SubResource("BoxShape3D_oi3di")
