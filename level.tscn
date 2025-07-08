@@ -100,3 +100,5 @@ shadow_blur = 1.8
 light_color = Color(0.537574, 0.606158, 0.924448, 1)
 shadow_enabled = true
 shadow_bias = 0.5
+shadow_opacity = 0.5
+shadow_blur = 2.796
