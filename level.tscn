@@ -1,19 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=12 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://dx56araebri33" path="res://assets/room/furniture/sofa.obj" id="2_vonw3"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5xgho"]
-sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
-ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
-
-[sub_resource type="Sky" id="Sky_u52ul"]
-sky_material = SubResource("ProceduralSkyMaterial_5xgho")
-
-[sub_resource type="Environment" id="Environment_vonw3"]
-background_mode = 2
-sky = SubResource("Sky_u52ul")
-tonemap_mode = 2
+[ext_resource type="Script" uid="uid://d26102pwa3s8h" path="res://environment.gd" id="3_oi3di"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_5xgho"]
 size = Vector2(5, 6)
@@ -30,18 +19,22 @@ size = Vector3(5.89266, 4.09814, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_oi3di"]
 size = Vector3(2.52661, 0.45874, 0.929688)
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5xgho"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_oi3di"]
+sky_material = SubResource("ProceduralSkyMaterial_5xgho")
+
+[sub_resource type="Environment" id="Environment_vonw3"]
+background_mode = 2
+background_color = Color(0.00784314, 0.00784314, 0.0196078, 1)
+sky = SubResource("Sky_oi3di")
+ambient_light_source = 2
+ambient_light_energy = 0.1
+tonemap_mode = 2
+
 [node name="Node3D" type="Node3D"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_vonw3")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
-light_color = Color(1, 0.94297, 0.921578, 1)
-light_energy = 0.7
-shadow_enabled = true
-shadow_opacity = 0.93
-shadow_blur = 1.242
 
 [node name="Player" parent="." instance=ExtResource("1_u52ul")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.501)
@@ -88,3 +81,22 @@ mesh = ExtResource("2_vonw3")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/MeshInstance3D/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104614, 0.219116, 0.0351563)
 shape = SubResource("BoxShape3D_oi3di")
+
+[node name="Environment" type="Node3D" parent="."]
+script = ExtResource("3_oi3di")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_vonw3")
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_color = Color(1, 0.94297, 0.921578, 1)
+shadow_enabled = true
+shadow_bias = 0.5
+shadow_opacity = 0.9
+shadow_blur = 1.8
+
+[node name="Moon" type="DirectionalLight3D" parent="Environment"]
+light_color = Color(0.537574, 0.606158, 0.924448, 1)
+shadow_enabled = true
+shadow_bias = 0.5
