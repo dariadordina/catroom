@@ -31,8 +31,13 @@ background_mode = 2
 background_color = Color(0.00784314, 0.00784314, 0.0196078, 1)
 sky = SubResource("Sky_oi3di")
 ambient_light_source = 2
+ambient_light_color = Color(0.798661, 0.466862, 0.591614, 1)
 ambient_light_energy = 0.1
 tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
 
 [node name="Node3D" type="Node3D"]
 
@@ -92,9 +97,6 @@ environment = SubResource("Environment_vonw3")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 light_color = Color(1, 0.94297, 0.921578, 1)
 shadow_enabled = true
-shadow_bias = 0.5
-shadow_opacity = 0.9
-shadow_blur = 1.8
 
 [node name="Moon" type="DirectionalLight3D" parent="Environment"]
 light_color = Color(0.537574, 0.606158, 0.924448, 1)
