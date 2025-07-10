@@ -28,12 +28,23 @@ var base_camera_position := Vector3.ZERO
 # Animation
 @onready var anim_player = $Cat2/AnimationPlayer
 
+var active := false
+
+func wake_up():
+	active = true
+
+func sleep():
+	active = false
+
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	base_camera_position = camera_pivot.position
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not active:
+		return
+		
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		twist -= event.relative.x * mouse_sensitivity
 		pitch -= event.relative.y * mouse_sensitivity
@@ -49,6 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
 
 func _process(_delta: float) -> void:
+	if not active:
+		return
 	twist_pivot.rotation.y = twist
 	pitch_pivot.rotation.x = pitch
 	
@@ -60,6 +73,9 @@ func _process(_delta: float) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _physics_process(delta: float) -> void:
+	if not active:
+		return
+		
 	var input_dir = Vector3.ZERO
 	input_dir.x = Input.get_axis("move_left", "move_right")
 	input_dir.z = Input.get_axis("move_forward", "move_back")

@@ -1,8 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=15 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://dx56araebri33" path="res://assets/room/furniture/sofa.obj" id="2_vonw3"]
+[ext_resource type="Script" uid="uid://cogonai8wrcyj" path="res://players_manager.gd" id="3_f2txt"]
 [ext_resource type="Script" uid="uid://d26102pwa3s8h" path="res://environment.gd" id="3_oi3di"]
+[ext_resource type="PackedScene" uid="uid://dmktnqt8fau3r" path="res://human_player.tscn" id="5_1ainy"]
+[ext_resource type="Script" uid="uid://2sw6sflq1lsu" path="res://human_player.gd" id="6_1ainy"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_5xgho"]
 size = Vector2(5, 6)
@@ -40,11 +43,6 @@ ssil_enabled = true
 sdfgi_enabled = true
 
 [node name="Node3D" type="Node3D"]
-
-[node name="Player" parent="." instance=ExtResource("1_u52ul")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.501)
-top_level = true
-slide_on_ceiling = false
 
 [node name="Room" type="Node3D" parent="."]
 
@@ -104,3 +102,14 @@ shadow_enabled = true
 shadow_bias = 0.5
 shadow_opacity = 0.5
 shadow_blur = 2.796
+
+[node name="Players" type="Node3D" parent="."]
+script = ExtResource("3_f2txt")
+
+[node name="cat_player" parent="Players" instance=ExtResource("1_u52ul")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.501)
+top_level = true
+slide_on_ceiling = false
+
+[node name="human_player" parent="Players" instance=ExtResource("5_1ainy")]
+script = ExtResource("6_1ainy")
