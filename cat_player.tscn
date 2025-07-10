@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://kn6ykqolgoae"]
 
-[ext_resource type="Script" uid="uid://c2ca2qkf87nxv" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://c2ca2qkf87nxv" path="res://cat_player.gd" id="1_4flbx"]
 [ext_resource type="PackedScene" uid="uid://b64o2v13ocraa" path="res://cat_2.tscn" id="2_onrkg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_onrkg"]

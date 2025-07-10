@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://crsrsc5dlcqhk"]
 
-[ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://player.tscn" id="1_u52ul"]
+[ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://cat_player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://dx56araebri33" path="res://assets/room/furniture/sofa.obj" id="2_vonw3"]
 [ext_resource type="Script" uid="uid://cogonai8wrcyj" path="res://players_manager.gd" id="3_f2txt"]
 [ext_resource type="Script" uid="uid://d26102pwa3s8h" path="res://environment.gd" id="3_oi3di"]
@@ -42,7 +42,7 @@ ssao_enabled = true
 ssil_enabled = true
 sdfgi_enabled = true
 
-[node name="Node3D" type="Node3D"]
+[node name="game" type="Node3D"]
 
 [node name="Room" type="Node3D" parent="."]
 
