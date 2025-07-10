@@ -16,13 +16,14 @@ var pitch := 0.0
 @onready var pitch_pivot := $TwistPivot/PitchPivot
 
 # Zoom-Parameter
-var zoom_distance := 5.0
-var min_zoom := 2.0
-var max_zoom := 10.0
-var current_zoom := 5.0
+var zoom_distance := 0.0
+var min_zoom := -1.0
+var max_zoom := 1.0
+var current_zoom := 0.0
 
 # CameraPivot-Referenz (passe den Pfad an!)
 @onready var camera_pivot = $TwistPivot/PitchPivot/Camera3D
+var base_camera_position := Vector3.ZERO
 
 # Animation
 @onready var anim_player = $Cat2/AnimationPlayer
@@ -30,29 +31,30 @@ var current_zoom := 5.0
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	base_camera_position = camera_pivot.position
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		twist -= event.relative.x * mouse_sensitivity
 		pitch -= event.relative.y * mouse_sensitivity
-		pitch = clamp(pitch, deg_to_rad(-30), deg_to_rad(30))
+		pitch = clamp(pitch, deg_to_rad(-40), deg_to_rad(40))
 		
 	#Zoom
-	#if event is InputEventMouseButton:
-		#if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			#zoom_distance -= 0.1
-		#elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			#zoom_distance += 0.1
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			zoom_distance += 0.3
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			zoom_distance -= 0.3
 
-		#zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
+		zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
 
 func _process(_delta: float) -> void:
 	twist_pivot.rotation.y = twist
 	pitch_pivot.rotation.x = pitch
 	
 	#Zoom
-	#current_zoom = lerp(current_zoom, zoom_distance, _delta)
-	#camera_pivot.position.z = current_zoom
+	current_zoom = lerp(current_zoom, zoom_distance, 5.0 * _delta)
+	camera_pivot.position = base_camera_position + Vector3(0, 0, -current_zoom)
 
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
