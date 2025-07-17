@@ -1,36 +1,52 @@
 extends Node3D
 
-var players := []
+@onready var cat_player = $cat_player
+@onready var human_player = $human_player
+@onready var shader_rect := get_node("/root/game/view_shaders/human_shader")
+
 var current_player : Node = null
 
 func _ready():
-	# Hole alle direkten Children = deine Player
-	players = get_children()
-	# Mache den ersten aktiv:
-	current_player = players[0]
+	current_player = cat_player
 	_activate_player(current_player)
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("switch_player"):
 		switch_player()
 
 func switch_player():
-	current_player.sleep() # alle Players haben sleep()
+	current_player.sleep()
 
-	# Nächsten Player holen (wrap-around)
-	var idx = players.find(current_player)
-	idx = (idx + 1) % players.size()
-	current_player = players[idx]
+	if current_player == cat_player:
+		current_player = human_player
+	else:
+		current_player = cat_player
 
 	_activate_player(current_player)
 
 func _activate_player(player):
 	player.wake_up()
-	var player_camera = player.get_node("TwistPivot/PitchPivot/Camera3D")
-	for p in players:
-		var cam = p.get_node("Camera3D")
+
+	# Kamera
+	for p in [cat_player, human_player]:
+		var cam = _find_camera(p)
 		if cam:
 			cam.current = false
 
-	if player_camera:
-		player_camera.current = true
+	var cam = _find_camera(player)
+	if cam:
+		cam.current = true
+
+	# Shader aktivieren, wenn wir im "Katzen-Traum" sind
+	shader_rect.visible = (player == human_player)
+
+func _find_camera(player: Node) -> Camera3D:
+	if player.has_node("TwistPivot/PitchPivot/Camera3D"):
+		return player.get_node("TwistPivot/PitchPivot/Camera3D")
+	elif player.has_node("Camera3D"):
+		return player.get_node("Camera3D")
+	else:
+		for node in player.get_children():
+			if node is Camera3D:
+				return node
+	return null

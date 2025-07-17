@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=23 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://cat_player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://ciup1syk8xov3" path="res://assets/room/furniture/kitchen_table.obj" id="2_i2t4f"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" uid="uid://c3cdltmamvgr8" path="res://level.gdshader" id="11_8b0r0"]
 [ext_resource type="ArrayMesh" uid="uid://bibx13pcbsc0b" path="res://assets/room/furniture/small_sofa.obj" id="11_aicyk"]
 [ext_resource type="Script" uid="uid://c6f15r3jqfvdi" path="res://color_rect.gd" id="12_h6smj"]
+[ext_resource type="Shader" uid="uid://bv85t8ibtim5v" path="res://dithering.gdshader" id="13_8b0r0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u52ul"]
 size = Vector3(7.96925, 4.09814, 1)
@@ -45,6 +46,9 @@ tonemap_mode = 2
 shader = ExtResource("11_8b0r0")
 shader_parameter/time = 0.0
 shader_parameter/intensity = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6smj"]
+shader = ExtResource("13_8b0r0")
 
 [node name="game" type="Node3D"]
 
@@ -140,9 +144,10 @@ mesh = ExtResource("10_2orkt")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.97832, 0.00366959, -0.613328)
 mesh = ExtResource("11_aicyk")
 
-[node name="humanview_shader" type="CanvasLayer" parent="."]
+[node name="view_shaders" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="humanview_shader"]
+[node name="human_shader" type="ColorRect" parent="view_shaders"]
+visible = false
 material = SubResource("ShaderMaterial_v5j5c")
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,5 +156,18 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("12_h6smj")
+
+[node name="ColorRect" type="ColorRect" parent="view_shaders"]
+material = SubResource("ShaderMaterial_h6smj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+color = Color(1, 1, 1, 0.011)
