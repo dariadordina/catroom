@@ -4,6 +4,11 @@ extends Node3D
 @onready var human_player = $human_player
 @onready var shader_rect := get_node("/root/game/view_shaders/human_shader")
 
+var switch_cooldown := 120.0 # Sekunden
+var time_left := 0.0
+@onready var cooldown_label = $"/root/game/UI/Window/CooldownLabel"
+@onready var sleep_button = $"/root/game/UI/Window/SleepButton"
+
 var current_player : Node = null
 
 func _ready():
@@ -13,6 +18,19 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("switch_player"):
 		switch_player()
+		
+	if time_left > 0.0:
+		time_left -= _delta
+		cooldown_label.text = "Warten: " + str(ceil(time_left)) + "s"
+		sleep_button.disabled = true
+	else:
+		cooldown_label.text = ""
+		sleep_button.disabled = false
+
+func _on_sleep_button_pressed():
+	if time_left <= 0.0:
+		switch_player()
+		time_left = switch_cooldown
 
 func switch_player():
 	current_player.sleep()
@@ -24,11 +42,26 @@ func switch_player():
 
 	_activate_player(current_player)
 
+	time_left = switch_cooldown
+
 func _activate_player(player):
 	player.wake_up()
 
-	# Kamera
+	# Nur dieser Player verarbeitet nun Physik und Input
 	for p in [cat_player, human_player]:
+		p.set_process(false)
+		p.set_physics_process(false)
+		p.set_process_input(false)
+		p.set_process_unhandled_input(false)
+
+	player.set_process(true)
+	player.set_physics_process(true)
+	player.set_process_input(true)
+	player.set_process_unhandled_input(true)
+
+	# Kamera wechseln
+	for p in [cat_player, human_player]:
+		@warning_ignore("confusable_local_declaration")
 		var cam = _find_camera(p)
 		if cam:
 			cam.current = false

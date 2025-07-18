@@ -1,80 +1,27 @@
-extends CharacterBody3D
+extends PlayerBase
 
-#Movement
-var speed := 5.0
-var run_speed := 10.0
-var jump_velocity := 8.0
-var gravity := -20.0
+@onready var anim_player = $Cat2/AnimationPlayer
 var cat_velocity := Vector3.ZERO
 
-
-#mouse
-var mouse_sensitivity := 0.002 #:= static type declaration = dynamic type decl
-var twist := 0.0
-var pitch := 0.0
+# Kamera
 @onready var twist_pivot := $TwistPivot
 @onready var pitch_pivot := $TwistPivot/PitchPivot
+@onready var camera_pivot := $TwistPivot/PitchPivot/Camera3D
 
-# Zoom-Parameter
-var zoom_distance := 0.0
-var min_zoom := -1.0
-var max_zoom := 1.0
-var current_zoom := 0.0
+func _process(delta):
+	if not active:
+		return
+	update_camera_controls(twist_pivot, pitch_pivot, camera_pivot, delta)
 
-# CameraPivot-Referenz (passe den Pfad an!)
-@onready var camera_pivot = $TwistPivot/PitchPivot/Camera3D
-var base_camera_position := Vector3.ZERO
-
-# Animation
-@onready var anim_player = $Cat2/AnimationPlayer
-
-var active := false
-
-func wake_up():
-	active = true
-
-func sleep():
-	active = false
-
-
-func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+func _ready():
 	base_camera_position = camera_pivot.position
 
-func _unhandled_input(event: InputEvent) -> void:
+func _physics_process(_delta):
 	if not active:
 		return
-		
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		twist -= event.relative.x * mouse_sensitivity
-		pitch -= event.relative.y * mouse_sensitivity
-		pitch = clamp(pitch, deg_to_rad(-40), deg_to_rad(40))
-		
-	#Zoom
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			zoom_distance += 0.3
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			zoom_distance -= 0.3
-
-		zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
-
-func _process(_delta: float) -> void:
-	if not active:
-		return
-	twist_pivot.rotation.y = twist
-	pitch_pivot.rotation.x = pitch
-	
-	#Zoom
-	current_zoom = lerp(current_zoom, zoom_distance, 5.0 * _delta)
-	camera_pivot.position = base_camera_position + Vector3(0, 0, -current_zoom)
 
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-func _physics_process(delta: float) -> void:
-	if not active:
-		return
 		
 	var input_dir = Vector3.ZERO
 	input_dir.x = Input.get_axis("move_left", "move_right")
@@ -125,7 +72,7 @@ func _physics_process(delta: float) -> void:
 
 	# Gravitation
 	if not is_on_floor():
-		cat_velocity.y += gravity * delta
+		cat_velocity.y += gravity * _delta
 	else:
 		cat_velocity.y = 0
 		if Input.is_action_just_pressed("jump"):
@@ -133,7 +80,7 @@ func _physics_process(delta: float) -> void:
 			_play_anim_if_not_playing("cat_library/jump")
 
 	# Bewegung ausführen
-	self.velocity = cat_velocity
+	velocity = cat_velocity
 	move_and_slide()
 	
 func _play_anim_if_not_playing(anim_name: String) -> void:
