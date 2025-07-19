@@ -9,17 +9,22 @@ class_name PlayerManager
 
 @onready var game_state := get_node("/root/game/Scripts/GameState")
 
+@onready var ui_window = $"/root/game/UI/Window"
+
 func _ready():
+	ui_window.sleep_requested.connect(_on_sleep_requested)
 	game_state.players = [cat_player, human_player]
 	game_state.current_player = cat_player
 	_activate_player(cat_player)
+
+func _on_sleep_requested():
+	switch_player()
 
 func _process(_delta):
 	if game_state.time_left > 0.0:
 		game_state.time_left -= _delta
 		sleep_button.disabled = true
 	else:
-		cooldown_label.text = ""
 		sleep_button.disabled = false
 
 func _on_sleep_button_pressed():
@@ -39,8 +44,25 @@ func switch_player():
 	game_state.time_left = game_state.switch_cooldown
 
 func _activate_player(player):
+	print("\n--- Aktiviere Spieler:", player.name)
+
+	# Spieler aktivieren
 	player.wake_up()
 
+	# --- SIGNAL: ZOOM ---
+	var zoom_target = Callable(player, "update_zoom")
+	if _InputManager.is_connected("zoom_changed", zoom_target):
+		_InputManager.disconnect("zoom_changed", zoom_target)
+
+	_InputManager.connect("zoom_changed", zoom_target)
+
+	# --- SIGNAL: ROTATION ---
+	var rot_target = Callable(player, "update_rotation")
+	if _InputManager.is_connected("camera_rotated", rot_target):
+		_InputManager.disconnect("camera_rotated", rot_target)
+	_InputManager.connect("camera_rotated", rot_target)
+
+	# Nur diesen Player aktiv schalten
 	for p in [cat_player, human_player]:
 		p.set_process(false)
 		p.set_physics_process(false)
@@ -52,6 +74,7 @@ func _activate_player(player):
 	player.set_process_input(true)
 	player.set_process_unhandled_input(true)
 
+	# Kamera umschalten
 	for p in [cat_player, human_player]:
 		var cam = _find_camera(p)
 		if cam:
@@ -61,6 +84,7 @@ func _activate_player(player):
 	if cam:
 		cam.current = true
 
+	# Shader
 	shader_rect.visible = (player == human_player)
 
 func _find_camera(player: Node) -> Camera3D:

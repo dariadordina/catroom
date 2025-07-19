@@ -15,6 +15,11 @@ run/main_scene="uid://crsrsc5dlcqhk"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+_GameState="*res://Scripts/game_state.gd"
+_InputManager="*res://Scripts/input_manager.gd"
+
 [display]
 
 window/size/viewport_width=1920
@@ -61,6 +66,7 @@ switch_player={
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 lights_and_shadows/positional_shadow/soft_shadow_filter_quality=3

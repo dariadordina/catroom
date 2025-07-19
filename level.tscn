@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=33 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://Players/cat_player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://ciup1syk8xov3" path="res://assets/room/furniture/kitchen_table.obj" id="2_i2t4f"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://mktm8rbglfb4" path="res://UI/window.gd" id="15_5pxul"]
 [ext_resource type="Script" uid="uid://dn2o3diy3qdh" path="res://UI/ui_manager.gd" id="16_4c15r"]
 [ext_resource type="Shader" uid="uid://cowayx3xisbms" path="res://UI/loading.gdshader" id="16_fedht"]
+[ext_resource type="Script" uid="uid://bwsq466e7dbe4" path="res://test_input.gd" id="18_42xju"]
 [ext_resource type="Script" uid="uid://dil84ifrqcrf0" path="res://Scripts/game_state.gd" id="19_ait7k"]
 [ext_resource type="Script" uid="uid://cpcykyaw6uod5" path="res://Scripts/input_manager.gd" id="20_42xju"]
 
@@ -212,13 +213,6 @@ popup_window = true
 theme = SubResource("Theme_h6smj")
 script = ExtResource("15_5pxul")
 
-[node name="CooldownLabel" type="Label" parent="UI/Window"]
-visible = false
-offset_left = 8.0
-offset_top = 9.0
-offset_right = 90.0
-offset_bottom = 53.0
-
 [node name="SleepButton" type="Button" parent="UI/Window"]
 offset_left = 4.0
 offset_top = 3.0
@@ -227,19 +221,13 @@ offset_bottom = 34.0
 text = "Sleep."
 flat = true
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="UI/Window"]
-offset_right = 40.0
-offset_bottom = 40.0
-fill_mode = 4
-
-[node name="TextureRect" type="TextureRect" parent="UI/Window"]
+[node name="Load_Icon" type="TextureRect" parent="UI/Window"]
 material = SubResource("ShaderMaterial_4c15r")
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Scripts" type="Node" parent="."]
-
-[node name="Main" type="Node" parent="Scripts"]
+script = ExtResource("18_42xju")
 
 [node name="GameState" type="Node" parent="Scripts"]
 script = ExtResource("19_ait7k")
@@ -250,5 +238,9 @@ script = ExtResource("19_ait7k")
 
 [node name="ShaderController" type="Node" parent="Scripts/Systems"]
 
-[node name="InputManager" type="Node" parent="Scripts"]
+[node name="InputManager" type="Node3D" parent="Scripts"]
 script = ExtResource("20_42xju")
+
+[node name="Scenes" type="Node" parent="."]
+
+[node name="Main" type="Node" parent="Scenes"]

@@ -12,3 +12,4 @@ var is_sleeping := false
 func _process(delta: float):
 	if time_left > 0.0:
 		time_left -= delta
+		
