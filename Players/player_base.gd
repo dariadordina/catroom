@@ -1,10 +1,13 @@
 extends CharacterBody3D
 class_name PlayerBase
 
+## Gemeinsame Basis-Klasse für CatPlayer und HumanPlayer
+
 var speed := 5.0
 var run_speed := 10.0
 var jump_velocity := 8.0
 var gravity := -20.0
+
 var active := false
 
 var twist := 0.0
@@ -25,27 +28,17 @@ func wake_up():
 func sleep():
 	active = false
 
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-func _unhandled_input(event: InputEvent):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			zoom_distance += 0.3
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			zoom_distance -= 0.3
-		zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
-	if event is InputEventMouseMotion:
-		twist -= event.relative.x * mouse_sensitivity
-		pitch -= event.relative.y * mouse_sensitivity
-		pitch = clamp(pitch, deg_to_rad(-40), deg_to_rad(40))
-
-func _process(delta):
-	if not active:
-		return
-		
 func update_camera_controls(twist_pivot, pitch_pivot, camera_pivot, delta):
 	twist_pivot.rotation.y = twist
 	pitch_pivot.rotation.x = pitch
 	current_zoom = lerp(current_zoom, zoom_distance, 5.0 * delta)
 	camera_pivot.position = base_camera_position + Vector3(0, 0, -current_zoom)
+
+func update_zoom(amount: float):
+	zoom_distance += amount
+	zoom_distance = clamp(zoom_distance, min_zoom, max_zoom)
+
+func update_rotation(rel_x: float, rel_y: float):
+	twist -= rel_x * mouse_sensitivity
+	pitch -= rel_y * mouse_sensitivity
+	pitch = clamp(pitch, deg_to_rad(-90), deg_to_rad(90))
