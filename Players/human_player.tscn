@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3noddpnpt7l4"]
+[gd_scene load_steps=4 format=3 uid="uid://b3noddpnpt7l4"]
+
+[ext_resource type="PackedScene" uid="uid://cv0ua0i7f7bln" path="res://Players/human_player_anim.tscn" id="1_uqt2d"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_35rin"]
 
@@ -8,6 +10,7 @@
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 mesh = SubResource("CapsuleMesh_35rin")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -22,3 +25,5 @@ transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 
 
 [node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
 transform = Transform3D(-1, 2.26267e-08, -8.4444e-08, -2.26267e-08, 0.866026, 0.5, 8.4444e-08, 0.5, -0.866026, 0, 1.01315, -1.31308)
+
+[node name="human" parent="." instance=ExtResource("1_uqt2d")]

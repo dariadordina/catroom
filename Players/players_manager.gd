@@ -4,7 +4,6 @@ class_name PlayerManager
 @onready var cat_player = $"/root/game/Players/cat_player"
 @onready var human_player = $"/root/game/Players/human_player"
 @onready var shader_rect := get_node("/root/game/view_shaders/human_shader")
-@onready var cooldown_label = $"/root/game/UI/Window/CooldownLabel"
 @onready var sleep_button = $"/root/game/UI/Window/SleepButton"
 
 @onready var game_state := get_node("/root/game/Scripts/GameState")

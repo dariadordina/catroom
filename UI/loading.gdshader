@@ -1,24 +1,23 @@
 shader_type canvas_item;
 
-uniform float time = 0.0;
-uniform vec4 spinner_color : source_color = vec4(1.0);
-uniform float thickness = 0.08;
-uniform float radius = 0.4;
-uniform float angle_range = 0.7; // zwischen 0.0 und 1.0
+uniform float time_scale = 1.0;
+uniform vec4 color = vec4(0.4, 1.0, 0.4, 1.0); // hellgrün
+uniform float thickness = 0.2;
+uniform float size = 0.9;
 
 void fragment() {
-    vec2 uv = UV * 2.0 - 1.0;
-    float r = length(uv);
-    float a = atan(uv.y, uv.x);
-    a = mod(a + time * 4.0, 6.2831); // Dreht sich
+	vec2 uv = (UV - vec2(0.5)) * 2.0; // Zentrum bei (0,0)
+	float r = length(uv);
+	float angle = atan(uv.y, uv.x);
 
-    float arc = 6.2831 * angle_range;
+	// Zeitabhängige Rotation (angle range: -PI bis PI)
+	float t = TIME * time_scale;
+	float arc = mod(angle - t, 6.283); // 2*PI
 
-    float inside = smoothstep(radius, radius - thickness, r);
-    float outside = smoothstep(radius + thickness, radius, r);
-    float arc_mask = step(0.0, a) * step(a, arc);
-
-    float mask = inside * outside * arc_mask;
-
-    COLOR = spinner_color * mask;
+	// Spinner-Effekt: zeige nur ein Segment
+	if (r < size && r > size - thickness && arc < 1.5) {
+		COLOR = color;
+	} else {
+		COLOR = vec4(0.0);
+	}
 }

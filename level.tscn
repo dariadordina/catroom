@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=41 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://Players/cat_player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://ciup1syk8xov3" path="res://assets/room/furniture/kitchen_table.obj" id="2_i2t4f"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dn2o3diy3qdh" path="res://UI/ui_manager.gd" id="16_4c15r"]
 [ext_resource type="Shader" uid="uid://cowayx3xisbms" path="res://UI/loading.gdshader" id="16_fedht"]
 [ext_resource type="Script" uid="uid://bwsq466e7dbe4" path="res://test_input.gd" id="18_42xju"]
+[ext_resource type="Texture2D" uid="uid://ccwg1s36ue8hj" path="res://assets/ui/Untitled-1.png" id="18_v7sqt"]
 [ext_resource type="Script" uid="uid://dil84ifrqcrf0" path="res://Scripts/game_state.gd" id="19_ait7k"]
 [ext_resource type="Script" uid="uid://cpcykyaw6uod5" path="res://Scripts/input_manager.gd" id="20_42xju"]
 
@@ -32,6 +33,27 @@ albedo_color = Color(0.3, 0.22895, 0.153, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i2t4f"]
 size = Vector3(6, 0.1, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u3yai"]
+size = Vector3(5.07239, 1, 0.684509)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fj6e6"]
+size = Vector3(4.52698, 0.721405, 0.600586)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2h3vt"]
+size = Vector3(0.966057, 3.03961, 0.537659)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_42xju"]
+size = Vector3(1.73133, 0.62674, 2.12863)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v7sqt"]
+size = Vector3(0.15271, 0.529255, 0.695313)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ilwjd"]
+size = Vector3(1.69244, 0.318481, 0.703857)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y3bce"]
+size = Vector3(1.28876, 0.569336, 0.153046)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5xgho"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -67,13 +89,12 @@ cache/0/16/0/scale = 1.0
 [sub_resource type="Theme" id="Theme_h6smj"]
 default_font = SubResource("FontFile_8b0r0")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c15r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_42xju"]
 shader = ExtResource("16_fedht")
-shader_parameter/time = 0.0
-shader_parameter/spinner_color = Color(1, 1, 1, 1)
-shader_parameter/thickness = 0.08
-shader_parameter/radius = 0.4
-shader_parameter/angle_range = 0.7
+shader_parameter/time_scale = 1.0
+shader_parameter/color = Vector4(1, 1, 1, 1)
+shader_parameter/thickness = 0.6
+shader_parameter/size = 0.95
 
 [node name="game" type="Node3D"]
 
@@ -131,15 +152,53 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.345
 mesh = ExtResource("7_n6hdu")
 skeleton = NodePath("../../..")
 
-[node name="Bed" type="MeshInstance3D" parent="Room"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Room/Furniture/Kitchen"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Furniture/Kitchen/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.03619, 0.330098, -0.314056)
+shape = SubResource("BoxShape3D_u3yai")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Room/Furniture/Kitchen/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2593, 2.19023, -0.338376)
+shape = SubResource("BoxShape3D_fj6e6")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Room/Furniture/Kitchen/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.481464, 1.01981, -0.231171)
+shape = SubResource("BoxShape3D_2h3vt")
+
+[node name="Bed" type="MeshInstance3D" parent="Room/Furniture"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.75343, 0, 1.86696)
 mesh = ExtResource("10_2orkt")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="SmallSofa" type="MeshInstance3D" parent="Room"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Room/Furniture/Bed"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Furniture/Bed/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.851501, 0.313004, -1.13429)
+shape = SubResource("BoxShape3D_42xju")
+
+[node name="SmallSofa" type="MeshInstance3D" parent="Room/Furniture"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.97832, 0.00366959, -0.613328)
 mesh = ExtResource("11_aicyk")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room/Furniture/SmallSofa"]
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Room/Furniture/SmallSofa/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.60488, 0.418511, -0.382505)
+shape = SubResource("BoxShape3D_v7sqt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Furniture/SmallSofa/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.852337, 0.262268, -0.369019)
+shape = SubResource("BoxShape3D_ilwjd")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Room/Furniture/SmallSofa/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0964966, 0.384234, -0.365234)
+shape = SubResource("BoxShape3D_v7sqt")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Room/Furniture/SmallSofa/StaticBody3D"]
+transform = Transform3D(1, -8.2896e-09, 7.93232e-10, 8.2896e-09, 0.981853, -0.189644, 7.93232e-10, 0.189644, 0.981853, 0.771067, 0.481158, -0.127413)
+shape = SubResource("BoxShape3D_y3bce")
 
 [node name="Environment" type="Node3D" parent="."]
 script = ExtResource("3_oi3di")
@@ -168,7 +227,7 @@ top_level = true
 slide_on_ceiling = false
 
 [node name="human_player" parent="Players" instance=ExtResource("5_1ainy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18254, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.53698, 0, 1.52267)
 script = ExtResource("6_1ainy")
 
 [node name="player_base" type="CharacterBody3D" parent="Players"]
@@ -214,17 +273,28 @@ theme = SubResource("Theme_h6smj")
 script = ExtResource("15_5pxul")
 
 [node name="SleepButton" type="Button" parent="UI/Window"]
-offset_left = 4.0
-offset_top = 3.0
-offset_right = 59.0
-offset_bottom = 34.0
+offset_left = 22.0
+offset_top = -3.0
+offset_right = 77.0
+offset_bottom = 28.0
 text = "Sleep."
 flat = true
 
 [node name="Load_Icon" type="TextureRect" parent="UI/Window"]
-material = SubResource("ShaderMaterial_4c15r")
-offset_right = 40.0
-offset_bottom = 40.0
+material = SubResource("ShaderMaterial_42xju")
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = -1
+anchor_left = 0.52
+anchor_top = 0.61
+anchor_right = 0.52
+anchor_bottom = 0.61
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_v7sqt")
 
 [node name="Scripts" type="Node" parent="."]
 script = ExtResource("18_42xju")

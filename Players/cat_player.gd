@@ -17,6 +17,17 @@ func _ready():
 func _process(delta):
 	if not active:
 		return
+	
+	var target_distance = 3.0  # normale Kameraentfernung
+	var min_distance = 0.2     # wie nah darf die Kamera ran?
+	var raycast = $TwistPivot/PitchPivot/RayCast3D
+	var cam = $TwistPivot/PitchPivot/Camera3D
+
+	if raycast.is_colliding():
+		var dist = raycast.get_collision_point().distance_to(global_transform.origin)
+		cam.position.z = -clamp(dist, min_distance, target_distance)
+	else:
+		cam.position.z = -target_distance
 
 	update_camera_controls(delta)
 		
@@ -46,7 +57,11 @@ func _physics_process(delta):
 	if is_moving:
 		var model = $Cat2
 		var target_rotation = atan2(direction.x, direction.z)
-		model.rotation.y = lerp_angle(model.rotation.y, target_rotation + PI, 0.15)
+		var new_rotation = lerp_angle(model.rotation.y, target_rotation + PI, 0.15)
+
+		$Cat2.rotation.y = new_rotation
+		$CollisionShape3D.rotation.y = new_rotation
+		$CollisionShape3D2.rotation.y = new_rotation
 
 		_play_movement_anim(is_running)
 	else:
