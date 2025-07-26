@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvg4krxi3dks0"]
+
+[ext_resource type="Script" uid="uid://dhvgp7dax8oaa" path="res://laser_manager.gd" id="1_hhuti"]
+[ext_resource type="Script" uid="uid://c71smvdrs27j2" path="res://laserspot.gd" id="2_gee7s"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fj6e6"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_y3bce"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u3yai"]
+albedo_color = Color(0.774694, 0, 0.17252, 1)
+emission_enabled = true
+emission = Color(0.853967, 0.0909172, 0.25161, 1)
+emission_energy_multiplier = 0.69
+
+[node name="Laser" type="Node3D"]
+script = ExtResource("1_hhuti")
+
+[node name="laser_area" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.0401525, 0, -1.909)
+visible = false
+mesh = SubResource("PlaneMesh_fj6e6")
+skeleton = NodePath("../../..")
+
+[node name="Laserspot" type="Node3D" parent="."]
+script = ExtResource("2_gee7s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Laserspot"]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, -2.22049)
+mesh = SubResource("SphereMesh_y3bce")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_u3yai")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Laserspot/MeshInstance3D"]
+light_color = Color(0.747989, 0, 0.158773, 1)
+light_energy = 8.685
+light_size = 0.019
+omni_range = 0.059

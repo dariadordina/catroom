@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://crsrsc5dlcqhk"]
+[gd_scene load_steps=44 format=3 uid="uid://crsrsc5dlcqhk"]
 
 [ext_resource type="PackedScene" uid="uid://kn6ykqolgoae" path="res://Players/cat_player.tscn" id="1_u52ul"]
 [ext_resource type="ArrayMesh" uid="uid://ciup1syk8xov3" path="res://assets/room/furniture/kitchen_table.obj" id="2_i2t4f"]
@@ -20,7 +20,10 @@
 [ext_resource type="Script" uid="uid://bwsq466e7dbe4" path="res://test_input.gd" id="18_42xju"]
 [ext_resource type="Texture2D" uid="uid://ccwg1s36ue8hj" path="res://assets/ui/Untitled-1.png" id="18_v7sqt"]
 [ext_resource type="Script" uid="uid://dil84ifrqcrf0" path="res://Scripts/game_state.gd" id="19_ait7k"]
+[ext_resource type="Script" uid="uid://f440n2s3s26v" path="res://play.gd" id="19_fj6e6"]
+[ext_resource type="Script" uid="uid://hikew4s2fymo" path="res://laserpopup.gd" id="19_u3yai"]
 [ext_resource type="Script" uid="uid://cpcykyaw6uod5" path="res://Scripts/input_manager.gd" id="20_42xju"]
+[ext_resource type="PackedScene" uid="uid://cvg4krxi3dks0" path="res://laserspot.tscn" id="23_y3bce"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u52ul"]
 size = Vector3(7.96925, 4.09814, 1)
@@ -236,6 +239,7 @@ script = ExtResource("9_h6smj")
 [node name="view_shaders" type="CanvasLayer" parent="."]
 
 [node name="human_shader" type="ColorRect" parent="view_shaders"]
+visible = false
 material = SubResource("ShaderMaterial_v5j5c")
 anchors_preset = 15
 anchor_right = 1.0
@@ -263,7 +267,7 @@ color = Color(1, 1, 1, 0.011)
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("16_4c15r")
 
-[node name="Window" type="Window" parent="UI"]
+[node name="Sleep" type="Window" parent="UI"]
 transparent_bg = true
 initial_position = 4
 unresizable = true
@@ -272,7 +276,7 @@ popup_window = true
 theme = SubResource("Theme_h6smj")
 script = ExtResource("15_5pxul")
 
-[node name="SleepButton" type="Button" parent="UI/Window"]
+[node name="SleepButton" type="Button" parent="UI/Sleep"]
 offset_left = 22.0
 offset_top = -3.0
 offset_right = 77.0
@@ -280,7 +284,7 @@ offset_bottom = 28.0
 text = "Sleep."
 flat = true
 
-[node name="Load_Icon" type="TextureRect" parent="UI/Window"]
+[node name="Load_Icon" type="TextureRect" parent="UI/Sleep"]
 material = SubResource("ShaderMaterial_42xju")
 custom_minimum_size = Vector2(64, 64)
 anchors_preset = -1
@@ -295,6 +299,24 @@ offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("18_v7sqt")
+
+[node name="Play" type="Node3D" parent="UI"]
+script = ExtResource("19_fj6e6")
+
+[node name="LaserPopup" type="Window" parent="UI/Play"]
+transparent_bg = true
+position = Vector2i(1200, 350)
+unresizable = true
+transparent = true
+popup_window = true
+script = ExtResource("19_u3yai")
+
+[node name="ButtonPlay" type="Button" parent="UI/Play/LaserPopup"]
+offset_left = 25.0
+offset_top = 5.0
+offset_right = 72.0
+offset_bottom = 36.0
+text = "PLAY"
 
 [node name="Scripts" type="Node" parent="."]
 script = ExtResource("18_42xju")
@@ -314,3 +336,7 @@ script = ExtResource("20_42xju")
 [node name="Scenes" type="Node" parent="."]
 
 [node name="Main" type="Node" parent="Scenes"]
+
+[node name="Interactions" type="Node3D" parent="."]
+
+[node name="Laser" parent="Interactions" instance=ExtResource("23_y3bce")]

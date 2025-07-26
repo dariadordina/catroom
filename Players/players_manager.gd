@@ -4,11 +4,11 @@ class_name PlayerManager
 @onready var cat_player = $"/root/game/Players/cat_player"
 @onready var human_player = $"/root/game/Players/human_player"
 @onready var shader_rect := get_node("/root/game/view_shaders/human_shader")
-@onready var sleep_button = $"/root/game/UI/Window/SleepButton"
+@onready var sleep_button = $"/root/game/UI/Sleep/SleepButton"
 
 @onready var game_state := get_node("/root/game/Scripts/GameState")
 
-@onready var ui_window = $"/root/game/UI/Window"
+@onready var ui_window = $"/root/game/UI/Sleep"
 
 func _ready():
 	ui_window.sleep_requested.connect(_on_sleep_requested)
